@@ -5,7 +5,6 @@ import AppNavigator from './AppNavigator';
 
 function MainNavigator() {
   const { user } = useAppSelector((state) => state.user);
-  console.log(user);
   return user ? <AppNavigator /> : <AuthNavigator />;
 }
 
