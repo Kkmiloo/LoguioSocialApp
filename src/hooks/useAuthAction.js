@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+//import { useEffect, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
+  // onAuthStateChanged,
 } from 'firebase/auth';
 
 import { auth } from '../../config/firebaseConfig';
@@ -12,7 +12,7 @@ import { loginUser, logoutUser } from '../redux/auth/authSlice';
 
 export default function useAuth() {
   const dispatch = useAppDispatch();
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
 
   /*   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -47,7 +47,7 @@ export default function useAuth() {
   };
 
   return {
-    error,
+    // error,
     signUp,
     signIn,
     logout,
