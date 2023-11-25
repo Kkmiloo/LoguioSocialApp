@@ -31,5 +31,6 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'react/prop-types': ['error', { ignore: ['navigation'] }],
   },
 };
