@@ -1,3 +1,4 @@
+/* global require */
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import React, { useCallback, useEffect } from 'react';
