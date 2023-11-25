@@ -6,9 +6,10 @@ import {
   // onAuthStateChanged,
 } from 'firebase/auth';
 
-import { auth } from '../../config/firebaseConfig';
+import { auth, database } from '../config/firebaseConfig';
 import { useAppDispatch } from './store';
 import { loginUser, logoutUser } from '../redux/auth/authSlice';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function useAuth() {
   const dispatch = useAppDispatch();
@@ -31,6 +32,11 @@ export default function useAuth() {
   const signUp = async ({ email, password }) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = JSON.stringify(userCredential.user);
+
+    await setDoc(doc(database, 'users', userCredential.user.uid), {
+      email: userCredential.user.email,
+      uid: userCredential.user.uid,
+    });
 
     dispatch(loginUser(user));
   };
