@@ -3,28 +3,52 @@ import React, { useState } from 'react';
 import { TextInput, View, Pressable, Text, Image } from 'react-native';
 import useAuth from '../../../hooks/useAuthAction';
 import { styles } from './SignUp.styles';
+import RoleSignUp from './RoleSignUp';
 
 function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const { signUp } = useAuth();
 
   const handleSignUp = () => {
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
     signUp({ email, password });
   };
+
+  return <RoleSignUp />;
 
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={require('../../../assets/images/loguio.png')} />
-      <Text> registro </Text>
-      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
+      <Text style={{ fontSize: 24, marginBottom: 24 }}> Registro </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        textContentType="emailAddress"
+      />
       <TextInput
         style={styles.input}
         placeholder="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
+        textContentType="password"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirmar Password"
+        secureTextEntry
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        textContentType="password"
       />
       <Pressable style={styles.button} onPress={handleSignUp}>
         <Text style={styles.textButton}> Registrarme </Text>
