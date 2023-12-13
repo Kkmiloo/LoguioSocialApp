@@ -5,7 +5,7 @@ import { useAppSelector } from '../hooks/store';
 
 function HomeScreen() {
   const { logout } = useAuth();
-  const { user } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.auth);
 
   const parserUser = JSON.parse(user);
   const handleLogout = () => {
