@@ -1,17 +1,31 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import React, { useState } from 'react';
 import RadioBtn from '../../../components/buttons/RadioBtn';
-
+import { styles } from './SignUp.styles';
+import loguioLogo from '../../../assets/images/loguio.png';
 const RoleSignUp = () => {
   const [value, setValue] = useState('');
 
-  return (
-    <View style={{ flex: 1 }}>
-      <Text>RoleSignUp</Text>
+  const data = ['Turista', 'Guia', 'Interprete'];
 
-      {<Text>{value}</Text>}
-      <RadioBtn label="Cliente" value="client" onValueChange={setValue} />
-      <RadioBtn label="Visitante" value="visitante" onValueChange={setValue} />
+  return (
+    <View style={styles.container}>
+      <Image style={styles.logo} source={loguioLogo} />
+      <Text style={{ fontSize: 24, marginBottom: 24 }}> Define tu rol </Text>
+
+      {data.map((item) => (
+        <RadioBtn
+          key={item}
+          label={item}
+          value={item}
+          onValueChange={setValue}
+          selectedValue={value}
+        />
+      ))}
+
+      <Pressable style={styles.button}>
+        <Text style={styles.textButton}> Continuar </Text>
+      </Pressable>
     </View>
   );
 };
