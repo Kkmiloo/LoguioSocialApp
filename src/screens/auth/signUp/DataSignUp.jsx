@@ -15,7 +15,6 @@ function DataSignUp() {
 
   const initialCheckboxState = data.reduce((acc, curr) => ({ ...acc, [curr]: false }), {});
   const [checkboxes, setCheckboxes] = useState(initialCheckboxState);
-
   const handleValueChange = (item) => {
     setCheckboxes((prev) => ({ ...prev, [item]: !prev[item] }));
   };
