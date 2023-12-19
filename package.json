@@ -20,6 +20,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "dotenv": "^16.3.1",
     "expo": "~49.0.15",
+    "expo-checkbox": "^2.5.0",
     "expo-constants": "~14.4.2",
     "expo-font": "~11.4.0",
     "expo-splash-screen": "~0.20.5",

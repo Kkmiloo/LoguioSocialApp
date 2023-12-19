@@ -12,6 +12,13 @@ function DataSignUp() {
   const [phone, setPhone] = useState('');
 
   const data = ['actividad 1', 'actividad 2', 'actividad 3', 'actividad 4'];
+
+  const initialCheckboxState = data.reduce((acc, curr) => ({ ...acc, [curr]: false }), {});
+  const [checkboxes, setCheckboxes] = useState(initialCheckboxState);
+
+  const handleValueChange = (item) => {
+    setCheckboxes((prev) => ({ ...prev, [item]: !prev[item] }));
+  };
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={loguioLogo} />
@@ -26,7 +33,12 @@ function DataSignUp() {
       <AppTextInput placeholder={'telefono'} value={phone} onChangeText={setPhone} />
 
       {data.map((item) => (
-        <CheckboxInput key={item} title={item} />
+        <CheckboxInput
+          key={item}
+          label={item}
+          isChecked={checkboxes[item]}
+          onValueChange={() => handleValueChange(item)}
+        />
       ))}
       <Text style={{ fontSize: 18, marginBottom: 24 }}> añade tus actividades preferidas </Text>
       <Pressable style={styles.button}>

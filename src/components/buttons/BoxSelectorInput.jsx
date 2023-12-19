@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from 'expo-checkbox';
 function CheckboxInput({ isChecked, onValueChange, label }) {
   return (
     <View style={styles.checkboxContainer}>
