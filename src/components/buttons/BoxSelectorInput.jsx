@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import CheckBox from 'expo-checkbox';
-function CheckboxInput({ isChecked, onValueChange, label }) {
+function BoxSelectorInput({ isChecked, onValueChange, label, style }) {
   return (
-    <View style={styles.checkboxContainer}>
+    <View style={(styles.checkboxContainer, { ...style })}>
       <CheckBox value={isChecked} onValueChange={onValueChange} style={styles.checkbox} />
       <Text style={styles.label}>{label}</Text>
     </View>
@@ -12,7 +12,6 @@ function CheckboxInput({ isChecked, onValueChange, label }) {
 
 const styles = StyleSheet.create({
   checkboxContainer: {
-    flexDirection: 'row',
     marginBottom: 20,
   },
   checkbox: {
@@ -23,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckboxInput;
+export default BoxSelectorInput;
