@@ -1,14 +1,17 @@
-import { TextInput } from 'react-native';
+import { Pressable, Text, TextInput } from 'react-native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-const AppTextInput = ({ placeholder, value, onChangeText }) => {
+import AppDatePicker from '../buttons/AppDatePicker';
+const AppTextInput = ({ placeholder, value, onChangeText, type, setDate }) => {
   return (
-    <TextInput
-      style={styles.input}
-      placeholder={placeholder}
-      value={value}
-      onChangeText={onChangeText}
-    />
+    <>
+      <TextInput
+        style={styles.input}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+      />
+    </>
   );
 };
 
