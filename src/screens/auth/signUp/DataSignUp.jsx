@@ -4,12 +4,15 @@ import loguioLogo from '../../../assets/images/loguio.png';
 import { styles } from './SignUp.styles';
 import AppTextInput from '../../../components/inputs/AppTextInput';
 import BoxSelectorInput from '../../../components/buttons/BoxSelectorInput';
+import { useRoute } from '@react-navigation/native';
 
 function DataSignUp() {
+  const route = useRoute();
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
+  const role = route.params.role;
 
   const data = [
     'actividad 1',
@@ -29,7 +32,7 @@ function DataSignUp() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image style={styles.logo} source={loguioLogo} />
-      <Text style={{ fontSize: 24, marginBottom: 24 }}> Define tu rol </Text>
+      <Text style={{ fontSize: 24, marginBottom: 24 }}> {role}</Text>
       <AppTextInput placeholder={'Nombre'} value={name} onChangeText={setName} />
       <AppTextInput placeholder={'Apellidos'} value={lastName} onChangeText={setLastName} />
 
