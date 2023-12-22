@@ -10,11 +10,12 @@ import AppTextInputDropDown from '../../../components/inputs/AppTextInputDropDow
 
 function DataSignUp() {
   const route = useRoute();
+  const role = route.params.role;
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
-  const role = route.params.role;
+  const [selectedCountry, setSelectedCountry] = useState('');
 
   const data = [
     'actividad 1',
@@ -33,11 +34,15 @@ function DataSignUp() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image style={styles.logo} source={loguioLogo} />
+      {/* <Image style={styles.logo} source={loguioLogo} /> */}
       <Text style={{ fontSize: 24, marginBottom: 24 }}> {role}</Text>
       <AppTextInput placeholder={'Nombre'} value={name} onChangeText={setName} />
       <AppTextInput placeholder={'Apellidos'} value={lastName} onChangeText={setLastName} />
-      <AppTextInputDropDown options={countries.countries} />
+      <AppTextInputDropDown
+        options={countries.countries}
+        value={selectedCountry}
+        setValue={setSelectedCountry}
+      />
       <AppTextInput placeholder={'Fecha de nacimiento'} value={date} onChangeText={setDate} />
       <AppTextInput placeholder={'telefono'} value={phone} onChangeText={setPhone} />
       <Text style={{ fontSize: 18, marginBottom: 24 }}> añade tus actividades preferidas </Text>
@@ -53,6 +58,7 @@ function DataSignUp() {
         ))}
       </View>
       <Pressable style={styles.button}>
+        {console.log([name, lastName, selectedCountry, date, phone, checkboxes])}
         <Text style={styles.textButton}> Continuar </Text>
       </Pressable>
     </ScrollView>

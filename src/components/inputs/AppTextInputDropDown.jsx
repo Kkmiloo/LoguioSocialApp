@@ -1,58 +1,64 @@
 import React, { useState } from 'react';
-import {
-  View,
-  TextInput,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
-const AppTextInputDropDown = ({ options }) => {
-  const [searchText, setSearchText] = useState('');
-  const [data, setData] = useState(options);
+const data = [
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' },
+  { label: 'Item 4', value: '4' },
+  { label: 'Item 5', value: '5' },
+  { label: 'Item 6', value: '6' },
+  { label: 'Item 7', value: '7' },
+  { label: 'Item 8', value: '8' },
+];
 
-  const handleSearch = (text) => {
-    setSearchText(text);
-  };
-
-  const filteredData = data
-    .filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
-    .splice(0, 5);
-
-  const renderItem = ({ item }) => (
-    <Pressable onPress={() => console.log(item.name)}>
-      <Text>{item.name}</Text>
-    </Pressable>
-  );
+const AppTextInputDropDown = ({ options, value, setValue }) => {
+  const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <>
-      <TextInput
-        style={styles.input}
-        placeholder="Search"
-        onChangeText={handleSearch}
-        value={searchText}
+    <View style={[styles.container]}>
+      <Dropdown
+        style={[styles.input, isFocus && { borderColor: 'blue' }]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={options}
+        search
+        maxHeight={300}
+        labelField="name"
+        valueField="name"
+        placeholder={!isFocus ? 'Select item' : '...'}
+        searchPlaceholder="Search..."
+        value={value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item) => {
+          setValue(item.name);
+          setIsFocus(false);
+        }}
       />
-      <FlatList
-        data={filteredData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.name.toString()}
-      />
-    </>
+    </View>
   );
 };
 
 export default AppTextInputDropDown;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
+    width: '100%',
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+  },
+  icon: {
+    marginRight: 5,
   },
   input: {
     width: '100%',
@@ -66,44 +72,27 @@ const styles = StyleSheet.create({
     fontFamily: 'Dhyana',
     fontSize: 16,
   },
-  button: {
-    width: '90%',
-    height: 56,
-    borderColor: 'gray',
-    marginBottom: 12,
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
     paddingHorizontal: 8,
-    borderRadius: 8,
-    marginTop: 24,
-    backgroundColor: '#EC5F5F',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#f1abab',
-    shadowOffset: {
-      width: 0,
-      height: 9,
-    },
-    shadowOpacity: 0,
-    shadowRadius: 6.65,
-    elevation: 11,
+    fontSize: 14,
   },
-  textButton: {
-    color: '#fff',
-    fontSize: 18,
-    fontFamily: 'Dhyana',
-    fontWeight: '400',
+  placeholderStyle: {
+    fontSize: 16,
   },
-
-  shadowContainer: {
-    shadowColor: '#F1ABAB',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
+  selectedTextStyle: {
+    fontSize: 16,
   },
-  logo: {
-    marginTop: 48,
-    width: 200,
-    height: 140,
-    resizeMode: 'contain',
-    marginBottom: 24,
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });

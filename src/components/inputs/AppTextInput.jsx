@@ -4,14 +4,12 @@ import { StyleSheet } from 'react-native';
 
 const AppTextInput = ({ placeholder, value, onChangeText, type, setDate }) => {
   return (
-    <>
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-      />
-    </>
+    <TextInput
+      style={styles.input}
+      placeholder={placeholder}
+      value={value}
+      onChangeText={onChangeText}
+    />
   );
 };
 
