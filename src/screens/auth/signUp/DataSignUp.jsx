@@ -5,6 +5,8 @@ import { styles } from './SignUp.styles';
 import AppTextInput from '../../../components/inputs/AppTextInput';
 import BoxSelectorInput from '../../../components/buttons/BoxSelectorInput';
 import { useRoute } from '@react-navigation/native';
+import countries from '../../../utils/countries.json';
+import AppTextInputDropDown from '../../../components/inputs/AppTextInputDropDown';
 
 function DataSignUp() {
   const route = useRoute();
@@ -35,7 +37,7 @@ function DataSignUp() {
       <Text style={{ fontSize: 24, marginBottom: 24 }}> {role}</Text>
       <AppTextInput placeholder={'Nombre'} value={name} onChangeText={setName} />
       <AppTextInput placeholder={'Apellidos'} value={lastName} onChangeText={setLastName} />
-
+      <AppTextInputDropDown options={countries.countries} />
       <AppTextInput placeholder={'Fecha de nacimiento'} value={date} onChangeText={setDate} />
       <AppTextInput placeholder={'telefono'} value={phone} onChangeText={setPhone} />
       <Text style={{ fontSize: 18, marginBottom: 24 }}> añade tus actividades preferidas </Text>
