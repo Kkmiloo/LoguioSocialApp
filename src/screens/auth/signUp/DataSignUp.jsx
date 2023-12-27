@@ -7,6 +7,9 @@ import BoxSelectorInput from '../../../components/buttons/BoxSelectorInput';
 import { useRoute } from '@react-navigation/native';
 import countries from '../../../utils/countries.json';
 import AppTextInputDropDown from '../../../components/inputs/AppTextInputDropDown';
+import { useAppDispatch, useAppSelector } from '../../../hooks/store';
+import { postUserInfo } from '../../../firebase/functions/firebaseFirestore';
+import useAuth from '../../../hooks/useAuthAction';
 
 function DataSignUp() {
   const route = useRoute();
@@ -16,6 +19,8 @@ function DataSignUp() {
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
+  const { updateUserInfo } = useAuth();
+  const { user } = useAppSelector((state) => state.auth);
 
   const data = [
     'actividad 1',
@@ -30,6 +35,14 @@ function DataSignUp() {
   const [checkboxes, setCheckboxes] = useState(initialCheckboxState);
   const handleValueChange = (item) => {
     setCheckboxes((prev) => ({ ...prev, [item]: !prev[item] }));
+  };
+
+  const handleCompleteProfile = () => {
+    if (!name || !lastName || !phone || !date || !selectedCountry) {
+      alert('Todos los campos son obligatorios');
+      return;
+    }
+    updateUserInfo(user.uid, { name, lastName, phone, date, selectedCountry });
   };
 
   return (
@@ -57,8 +70,7 @@ function DataSignUp() {
           />
         ))}
       </View>
-      <Pressable style={styles.button}>
-        {console.log([name, lastName, selectedCountry, date, phone, checkboxes])}
+      <Pressable style={styles.button} onPress={handleCompleteProfile}>
         <Text style={styles.textButton}> Continuar </Text>
       </Pressable>
     </ScrollView>

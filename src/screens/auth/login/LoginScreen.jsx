@@ -5,11 +5,14 @@ import useAuth from '../../../hooks/useAuthAction';
 import { styles } from './Login.styles';
 import { useAppSelector } from '../../../hooks/store';
 
-function LoginScreen({ navigation }) {
+import { useNavigation } from '@react-navigation/native';
+
+function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { error } = useAppSelector((state) => state.auth);
 
+  const navigation = useNavigation();
   const { signIn } = useAuth();
 
   const handleLogin = () => {

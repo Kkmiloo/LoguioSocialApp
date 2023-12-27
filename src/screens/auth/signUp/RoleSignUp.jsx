@@ -25,7 +25,6 @@ function RoleSignUp() {
     <View style={styles.container}>
       <Image style={styles.logo} source={loguioLogo} />
       <Text style={{ fontSize: 24, marginBottom: 24 }}> Define tu rol </Text>
-
       <View
         style={{
           display: 'flex',

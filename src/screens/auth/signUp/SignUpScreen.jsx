@@ -4,13 +4,14 @@ import { TextInput, View, Pressable, Text, Image } from 'react-native';
 import useAuth from '../../../hooks/useAuthAction';
 import { styles } from './SignUp.styles';
 import RoleSignUp from './RoleSignUp';
+import { useNavigation } from '@react-navigation/native';
 
-function SignUpScreen({ navigation }) {
+function SignUpScreen() {
+  const { signUp } = useAuth();
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  const { signUp } = useAuth();
 
   const handleSignUp = () => {
     if (password !== confirmPassword) {
@@ -18,9 +19,8 @@ function SignUpScreen({ navigation }) {
       return;
     }
     signUp({ email, password });
+    navigation.navigate('RoleSignUp');
   };
-
-  return <RoleSignUp />;
 
   return (
     <View style={styles.container}>
@@ -61,8 +61,7 @@ function SignUpScreen({ navigation }) {
             style={{ color: '#0082CD', fontSize: 18 }}
             onPress={() => navigation.navigate('login')}
           >
-            {' '}
-            Inicia Sesión{' '}
+            Inicia Sesión
           </Text>
         </Pressable>
       </View>
