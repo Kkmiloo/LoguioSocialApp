@@ -2,7 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import React, { useCallback } from 'react';
-import AppNavigator from './src/navigation/MainNavigator';
+import MainNavigator from './src/navigation/MainNavigator';
 import { Provider } from 'react-redux';
 import store from './src/redux';
 import * as SplashScreen from 'expo-splash-screen';
@@ -32,7 +32,7 @@ export default function App() {
         <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
           <Provider store={store}>
             <NavigationContainer>
-              <AppNavigator />
+              <MainNavigator />
             </NavigationContainer>
           </Provider>
         </View>
