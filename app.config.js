@@ -2,8 +2,8 @@ import 'dotenv/config';
 
 export default {
   expo: {
-    name: 'LoguioSocialApp',
-    slug: 'LoguioSocialApp',
+    name: 'loguiosocialapp',
+    slug: 'loguio',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -33,6 +33,9 @@ export default {
       storageBucket: process.env.STORAGE_BUCKET,
       messagingSenderId: process.env.MESSAGING_SENDER_ID,
       appId: process.env.APP_ID,
+      eas: {
+        projectId: '73a7f28f-2c65-4f1b-975f-87889ecbab53',
+      },
     },
   },
 };
