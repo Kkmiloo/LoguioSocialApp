@@ -1,4 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { auth } from '../../firebase/config/firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
+import { getUserInfo } from '../../firebase/functions/firebaseFirestore';
+
+export const handleAuthStateChanged = createAsyncThunk(
+  'auth/handleAuthStateChanged',
+  async (_, thunkAPI) => {
+    onAuthStateChanged(auth, async (item) => {
+      if (item) {
+        try {
+          const user = await getUserInfo(item.uid);
+          thunkAPI.dispatch(setUser(user));
+        } catch (error) {
+          // Handle error
+          thunkAPI.dispatch(setError(error.message));
+        }
+      } else {
+        thunkAPI.dispatch(clearUser());
+      }
+    });
+  },
+);
 
 const initialState = {
   user: null,
@@ -10,10 +32,11 @@ export const userSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginUser: (state, action) => {
+    setUser: (state, action) => {
       state.user = action.payload;
+      state.error = null;
     },
-    logoutUser: (state) => {
+    clearUser: (state) => {
       state.user = null;
     },
     setError: (state, action) => {
@@ -22,5 +45,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { loginUser, logoutUser, setError } = userSlice.actions;
+export const { setUser, clearUser, setError } = userSlice.actions;
 export default userSlice.reducer;
