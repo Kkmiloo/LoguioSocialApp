@@ -1,44 +1,31 @@
 //import { useEffect, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   // onAuthStateChanged,
 } from 'firebase/auth';
 
-import { auth, database } from '../config/firebaseConfig';
+import { auth, database } from '../firebase/config/firebaseConfig';
 import { useAppDispatch } from './store';
-import { loginUser, logoutUser, setError } from '../redux/auth/authSlice';
+import { setUser, clearUser, setError } from '../redux/auth/authSlice';
 import { doc, setDoc } from 'firebase/firestore';
+import { createUserInfo, getUserInfo, postUserInfo } from '../firebase/functions/firebaseFirestore';
 
 export default function useAuth() {
   const dispatch = useAppDispatch();
   //const [error, setError] = useState(null);
 
-  /*   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch(loginUser(user));
-      } else {
-        dispatch(logoutUser());
-      }
-    });
-
-    console.log('unsubscribe', unsubscribe);
-
-    return () => unsubscribe();
-  }, [dispatch]); */
-
   const signUp = async ({ email, password }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = JSON.stringify(userCredential.user);
 
-      await setDoc(doc(database, 'users', userCredential.user.uid), {
+      const user = await createUserInfo(userCredential.user.uid, {
         email: userCredential.user.email,
         uid: userCredential.user.uid,
       });
-      dispatch(loginUser(user));
+      dispatch(setUser(user));
     } catch (error) {
       dispatch(setError(error.message));
     }
@@ -47,8 +34,8 @@ export default function useAuth() {
   const signIn = async ({ email, password }) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = JSON.stringify(userCredential.user);
-      dispatch(loginUser(user));
+      const user = await getUserInfo(userCredential.user.uid);
+      dispatch(setUser(user));
     } catch (error) {
       dispatch(setError(error.message));
     }
@@ -56,11 +43,19 @@ export default function useAuth() {
 
   const logout = async () => {
     await signOut(auth);
-    dispatch(logoutUser());
+    dispatch(clearUser());
   };
 
+  const updateUserInfo = async (uid, info) => {
+    try {
+      const updatedUserInfo = await postUserInfo(uid, info);
+      dispatch(setUser(updatedUserInfo));
+    } catch (error) {
+      dispatch(setError(error.message));
+    }
+  };
   return {
-    // error,
+    updateUserInfo,
     signUp,
     signIn,
     logout,
