@@ -3,10 +3,25 @@ import React, { useState } from 'react';
 import { TextInput, View, Pressable, Text, Image } from 'react-native';
 
 import { styles } from './Login.styles';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/config/firebaseConfig';
+import { useSession } from '../context/ctx';
+import { router } from 'expo-router';
 
-function LoginScreen() {
+function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { signIn } = useSession();
+
+  const handleLogin = async () => {
+    try {
+      console.log(email, password);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -20,7 +35,13 @@ function LoginScreen() {
         onChangeText={setPassword}
       />
       {/*  {error && <Text style={{ color: 'red' }}>{error}</Text>} */}
-      <Pressable style={styles.button}>
+      <Pressable
+        style={styles.button}
+        onPress={() => {
+          signIn();
+          router.replace('/');
+        }}
+      >
         <Text style={styles.textButton}> Iniciar sesión </Text>
       </Pressable>
       <Pressable>
@@ -37,4 +58,4 @@ function LoginScreen() {
   );
 }
 
-export default LoginScreen;
+export default SignIn;

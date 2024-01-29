@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 16,
     borderRadius: 8,
     backgroundColor: '#F6F7FA',
-    fontFamily: 'Dhyana',
+    /* fontFamily: 'Dhyana', */
     fontSize: 16,
   },
   button: {
@@ -43,7 +43,8 @@ export const styles = StyleSheet.create({
   textButton: {
     color: '#fff',
     fontSize: 18,
-    fontFamily: 'Dhyana',
+    /* fontFamily: 'Dhyana', */
+
     fontWeight: '400',
   },
 
