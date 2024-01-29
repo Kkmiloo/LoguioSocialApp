@@ -6,6 +6,7 @@ export default {
     slug: 'loguio',
     version: '1.0.0',
     orientation: 'portrait',
+    scheme: 'loguiosocialapp',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     splash: {
@@ -25,7 +26,9 @@ export default {
     },
     web: {
       favicon: './assets/favicon.png',
+      bundler: 'metro',
     },
+    plugins: ['expo-router'],
     extra: {
       apiKey: process.env.API_KEY,
       authDomain: process.env.AUTH_DOMAIN,
