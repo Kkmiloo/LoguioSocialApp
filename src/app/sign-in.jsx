@@ -38,7 +38,7 @@ function SignIn() {
       <Pressable
         style={styles.button}
         onPress={() => {
-          signIn();
+          signIn(email, password);
           router.replace('/');
         }}
       >

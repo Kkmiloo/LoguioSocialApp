@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useStorageState } from './useStorageState';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/config/firebaseConfig';
 
 const AuthContext = React.createContext({
   signIn: () => null,
@@ -23,12 +25,29 @@ export function useSession() {
 export function SessionProvider(props) {
   const [[isLoading, session], setSession] = useStorageState('session');
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('hola');
+        setSession(user);
+      } else {
+        console.log('none');
+      }
+    });
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => {
+        signIn: async (email, password) => {
           // Perform sign-in logic here
-          setSession('xxx');
+          try {
+            const user = await signInWithEmailAndPassword(auth, email, password);
+            console.log(user);
+            setSession(user);
+          } catch (e) {
+            console.log(e);
+          }
         },
         signOut: () => {
           setSession(null);

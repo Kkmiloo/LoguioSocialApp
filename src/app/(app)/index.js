@@ -1,11 +1,17 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSession } from '../../context/ctx';
 
 const index = () => {
+  const { signOut } = useSession();
   return (
     <SafeAreaView>
       <Text>index 2</Text>
+
+      <Pressable onPress={() => signOut()}>
+        <Text>hola </Text>
+      </Pressable>
     </SafeAreaView>
   );
 };
