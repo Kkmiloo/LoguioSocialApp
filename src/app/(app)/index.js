@@ -4,7 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession } from '../../context/ctx';
 
 const index = () => {
-  const { signOut } = useSession();
+  const { signOut, session } = useSession();
+
+  console.log('session', session);
   return (
     <SafeAreaView>
       <Text>index 2</Text>

@@ -12,7 +12,7 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn } = useSession();
+  const { signIn, error } = useSession();
 
   const handleLogin = async () => {
     try {
@@ -34,11 +34,11 @@ function SignIn() {
         value={password}
         onChangeText={setPassword}
       />
-      {/*  {error && <Text style={{ color: 'red' }}>{error}</Text>} */}
+      {error && <Text style={{ color: 'red' }}>{error}</Text>}
       <Pressable
         style={styles.button}
-        onPress={() => {
-          signIn(email, password);
+        onPress={async () => {
+          await signIn(email, password);
           router.replace('/');
         }}
       >
