@@ -1,14 +1,26 @@
 import { Pressable, Text, TextInput } from 'react-native';
-import React from 'react';
+import React, { forwardRef, memo, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../../styles/colors';
 
-const AppTextInput = ({ placeholder, value, onChangeText, type, setDate }) => {
+const AppTextInput = (
+  { children, placeholder, value, onChangeText, type, setDate, editable, refV },
+  ref,
+) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <TextInput
-      style={styles.input}
+      ref={refV}
+      style={isFocused ? [styles.input, styles.focused] : styles.input}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       placeholder={placeholder}
       value={value}
+      secureTextEntry={type === 'password'}
       onChangeText={onChangeText}
+      editable={editable}
+      autoCapitalize="none"
     />
   );
 };
@@ -16,6 +28,10 @@ const AppTextInput = ({ placeholder, value, onChangeText, type, setDate }) => {
 export default AppTextInput;
 
 export const styles = StyleSheet.create({
+  focused: {
+    borderColor: COLORS.secondary,
+    borderWidth: 2,
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',

@@ -6,7 +6,7 @@ import { useSession } from '../../context/ctx';
 const index = () => {
   const { signOut, session } = useSession();
 
-  console.log('session', session);
+  console.log('session app', session);
   return (
     <SafeAreaView>
       <Text>index 2</Text>
