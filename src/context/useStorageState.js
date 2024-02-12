@@ -41,9 +41,13 @@ export function useStorageState(key) {
         console.error('Local storage is unavailable:', e);
       }
     } else {
-      SecureStore.getItemAsync(key).then((value) => {
-        setState(value);
-      });
+      SecureStore.getItemAsync(key)
+        .then((value) => {
+          setState(value);
+        })
+        .catch((e) => {
+          console.error('Secure store is unavailable:', e);
+        });
     }
   }, [key]);
 

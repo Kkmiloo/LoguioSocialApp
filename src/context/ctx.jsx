@@ -1,12 +1,20 @@
 import React, { useEffect } from 'react';
 import { useStorageState } from './useStorageState';
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
 import { auth } from '../firebase/config/firebaseConfig';
 import firebaseErrors from '../firebase/firebaseErrors';
+import { createUserInfo, getUserInfo, postUserInfo } from '../firebase/functions/firebaseFirestore';
 
 const AuthContext = React.createContext({
   signIn: async () => null,
   signOut: () => null,
+  signUp: async () => null,
+  completeProfile: async () => null,
+  clearError: () => null,
   session: null,
   isLoading: false,
   error: null,
@@ -25,42 +33,66 @@ export function useSession() {
 }
 
 export function SessionProvider(props) {
-  const [[isLoading, session], setSession] = useStorageState('session');
+  console.log('session provider');
+  const [[_, session], setSession] = useStorageState('session');
   const [error, setError] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  /*  useEffect(() => {
-    const unsuscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const userString = JSON.stringify(user);
+  const signIn = async (email, password) => {
+    try {
+      setIsLoading(true);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = await getUserInfo(userCredential.user.uid);
+      setSession(JSON.stringify(user));
+    } catch (e) {
+      console.log(e.message);
+      setError(firebaseErrors[e.code] || e.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        setSession([false, userString]);
-      } else {
-        setSession(null);
-      }
-    });
+  const signUp = async (email, password) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = await createUserInfo(userCredential.user.uid, {
+        email: userCredential.user.email,
+        uid: userCredential.user.uid,
+      });
+      setSession(JSON.stringify(user));
+    } catch (e) {
+      console.log('err', e.message);
+      setError(firebaseErrors[e.code] || e.message);
+      throw new Error(e);
+    }
+  };
 
-    return () => unsuscribe();
-  }, []); */
+  const signOut = () => {
+    firebaseSignOut(auth);
+    setSession(null);
+  };
+
+  const completeProfile = async (userUid, data) => {
+    try {
+      const user = await postUserInfo(userUid, data);
+      console.log(user);
+      setSession(JSON.stringify(user));
+    } catch (e) {
+      console.log(e.message);
+      setError(firebaseErrors[e.code] || e.message);
+    }
+  };
+
+  const clearError = () => setError(null);
 
   return (
     <AuthContext.Provider
       value={{
-        signIn: async (email, password) => {
-          // Perform sign-in logic here
-          try {
-            const user = await signInWithEmailAndPassword(auth, email, password);
-            const userString = JSON.stringify(user);
-            console.log('User', userString);
-
-            setSession([false, userString]);
-          } catch (e) {
-            console.log(e.message);
-            setError(firebaseErrors[e.code] || e.message);
-          }
-        },
-        signOut: () => {
-          setSession(null);
-        },
+        signIn,
+        signOut,
+        signUp,
+        completeProfile,
+        clearError,
         session,
         isLoading,
         error,
