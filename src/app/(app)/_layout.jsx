@@ -6,6 +6,10 @@ import { Text } from 'react-native';
 export default function AppLayout() {
   const { session, isLoading } = useSession();
 
+  const sessionInfo = JSON.parse(session) || {};
+
+  const { profileCompleted } = sessionInfo || undefined;
+
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -16,7 +20,13 @@ export default function AppLayout() {
   if (!session) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
+
     return <Redirect href="/sign-in" />;
+  }
+
+  if (!profileCompleted) {
+    console.log(sessionInfo);
+    return <Redirect href="/role-sign-up" />;
   }
 
   // This layout can be deferred because it's not the root layout.
