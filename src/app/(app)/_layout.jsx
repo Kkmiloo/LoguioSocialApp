@@ -1,17 +1,20 @@
 import { Redirect, Stack } from 'expo-router';
 
-import { useSession } from '../../context/ctx';
+import { useSession } from '../../context/AuthContext';
 import { Text } from 'react-native';
 
 export default function AppLayout() {
-  const { session, isLoading } = useSession();
+  const { session, sessionLoading } = useSession();
 
   const sessionInfo = JSON.parse(session) || {};
 
   const { profileCompleted } = sessionInfo || undefined;
 
+  console.log('sessionInfo Layout', sessionInfo);
+  console.log('session LAYOUT', session);
+
   // You can keep the splash screen open, or render a loading screen like we do here.
-  if (isLoading) {
+  if (sessionLoading) {
     return <Text>Loading...</Text>;
   }
 
@@ -25,7 +28,6 @@ export default function AppLayout() {
   }
 
   if (!profileCompleted) {
-    console.log(sessionInfo);
     return <Redirect href="/role-sign-up" />;
   }
 
