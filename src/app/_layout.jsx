@@ -2,9 +2,9 @@
 import React, { useEffect } from 'react';
 
 import { Slot, SplashScreen } from 'expo-router';
-import { SessionProvider } from '../context/ctx';
+import { SessionProvider } from '../context/AuthContext';
 import { useFonts } from 'expo-font';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ThemeProvider } from '../context/ThemeContext';
 
 const RootLayoutNav = () => {
   const [fontsLoaded, fontError] = useFonts({
@@ -24,9 +24,11 @@ const RootLayoutNav = () => {
   }
 
   return (
-    <SessionProvider>
-      <Slot />
-    </SessionProvider>
+    <ThemeProvider>
+      <SessionProvider>
+        <Slot />
+      </SessionProvider>
+    </ThemeProvider>
   );
 };
 
