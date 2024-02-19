@@ -7,18 +7,12 @@ import guide from '../../assets/images/guide.png';
 import interpreter from '../../assets/images/interpreter.png';
 import tourist from '../../assets/images/tourist.png';
 import { router } from 'expo-router';
-import { useSession } from '../../context/ctx';
-import DateTimePickerAndroid from '@react-native-community/datetimepicker';
+import { useSession } from '../../context/AuthContext';
+import SubmitButton from '../../components/buttons/SubmitButton';
+
 function RoleSignUp() {
   const [userRole, setUserRole] = useState('');
-
-  const { signOut, error } = useSession();
-
-  useEffect(() => {
-    if (error) {
-      router.back();
-    }
-  }, []);
+  const { signOut } = useSession();
 
   const data = [
     { role: 'Turista', img: tourist },
@@ -66,9 +60,8 @@ function RoleSignUp() {
       >
         <Text> Salir</Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={handleContinue}>
-        <Text style={styles.textButton}> Continuar </Text>
-      </Pressable>
+
+      <SubmitButton title="Continuar" onPress={handleContinue} />
     </View>
   );
 }

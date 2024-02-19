@@ -1,19 +1,16 @@
 import { View, Text, Image, Pressable, ScrollView, Platform } from 'react-native';
 import React, { useRef, useState } from 'react';
-
 import { styles } from '../../styles/SignUp.styles';
 import AppTextInput from '../../components/inputs/AppTextInput';
-import BoxSelectorInput from '../../components/buttons/BoxSelectorInput';
-import { useRoute } from '@react-navigation/native';
+import BoxSelectorInput from '../../components/inputs/BoxSelectorInput';
 import countries from '../../utils/countries.json';
 import AppTextInputDropDown from '../../components/inputs/AppTextInputDropDown';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useSession } from '../../context/ctx';
-import { postUserInfo } from '../../firebase/functions/firebaseFirestore';
+import { useSession } from '../../context/AuthContext';
 import DateTimePickerAndroid from '@react-native-community/datetimepicker';
 import { TextInput } from 'react-native-gesture-handler';
-import CheckBox from 'expo-checkbox';
 import { KeyboardAvoidingView } from 'react-native';
+import loguioLogo from '../../assets/images/loguio.png';
 
 function DataSignUp() {
   const name = useRef();
@@ -21,16 +18,14 @@ function DataSignUp() {
   const phone = useRef();
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const params = useLocalSearchParams();
-  const { session, completeProfile } = useSession();
-  const userUid = JSON.parse(session).uid;
-  const { userRole } = params;
+  const [actividad, setActividad] = useState('');
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
-  const { error } = useSession();
+  const { session, completeProfile, error } = useSession();
+  const userUid = JSON.parse(session).uid;
+  const params = useLocalSearchParams();
+  const { userRole } = params;
 
-  console.log('Rednderizo', userRole);
-  console.log('toggle', showPicker);
   const data = [
     'actividad 1',
     'actividad 2',
@@ -42,6 +37,7 @@ function DataSignUp() {
 
   const initialCheckboxState = data.reduce((acc, curr) => ({ ...acc, [curr]: false }), {});
   const [checkboxes, setCheckboxes] = useState(initialCheckboxState);
+
   const handleValueChange = (item) => {
     setCheckboxes((prev) => ({ ...prev, [item]: !prev[item] }));
   };
@@ -54,6 +50,7 @@ function DataSignUp() {
     setDateOfBirth(currentDate.toDateString());
     setDate(currentDate);
     if (Platform.OS === 'android') {
+      setShowPicker(false);
     }
   };
 
@@ -78,18 +75,16 @@ function DataSignUp() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container}>
-        {/* <Image style={styles.logo} source={loguioLogo} /> */}
+        <Image style={styles.logo} source={loguioLogo} />
         <Text style={{ fontSize: 24, marginBottom: 24 }}> {userRole}</Text>
-        <TextInput
-          style={styles.input}
+        <AppTextInput
           placeholder={'Nombre'}
-          ref={name}
+          innerRef={name}
           onChangeText={(text) => (name.text = text)}
         />
-        <TextInput
-          style={styles.input}
+        <AppTextInput
           placeholder={'Apellidos'}
-          ref={lastName}
+          innerRef={lastName}
           onChangeText={(text) => (lastName.text = text)}
         />
         <AppTextInputDropDown
@@ -97,6 +92,7 @@ function DataSignUp() {
           value={selectedCountry}
           setValue={setSelectedCountry}
         />
+
         {showPicker && <DateTimePickerAndroid value={date} mode="date" onChange={onChange} />}
         <Pressable style={styles.input} onPress={() => setShowPicker(true)}>
           <View pointerEvents="none">
@@ -108,12 +104,21 @@ function DataSignUp() {
             />
           </View>
         </Pressable>
-        <TextInput
+        <AppTextInput
           style={styles.input}
           placeholder={'telefono'}
-          ref={phone}
+          innerRef={phone}
           onChangeText={(text) => (phone.text = text)}
         />
+        {userRole === 'Guía' && (
+          <>
+            <AppTextInput
+              placeholder="Permiso del guia"
+              value={actividad}
+              onChangeText={setActividad}
+            />
+          </>
+        )}
 
         <Text style={{ fontSize: 18, marginBottom: 24 }}> añade tus actividades preferidas </Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
@@ -128,6 +133,18 @@ function DataSignUp() {
           ))}
         </View>
 
+        {userRole === 'Guía' && (
+          <>
+            <Text style={{ fontSize: 18, marginBottom: 24, marginTop: 24 }}>
+              Actividad principal
+            </Text>
+            <AppTextInput
+              placeholder="Actividad Principal"
+              value={actividad}
+              onChangeText={setActividad}
+            />
+          </>
+        )}
         <Pressable style={styles.button} onPress={handleCompleteProfile}>
           <Text style={styles.textButton}> Continuar </Text>
         </Pressable>

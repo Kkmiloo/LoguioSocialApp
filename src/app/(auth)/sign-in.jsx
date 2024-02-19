@@ -1,21 +1,22 @@
 /* global require */
 import React, { useState } from 'react';
-import { TextInput, View, Pressable, Text, Image } from 'react-native';
-
-import { styles } from '../../styles/Login.styles';
-
-import { useSession } from '../../context/ctx';
+import { View, Pressable, Text, Image } from 'react-native';
+import { useSession } from '../../context/AuthContext';
 import { router } from 'expo-router';
 import AppTextInput from '../../components/inputs/AppTextInput';
+import SubmitButton from '../../components/buttons/SubmitButton';
+import ErrorMessage from '../../components/errors/ErrorMessage';
+import LinkButton from '../../components/buttons/LinkButton';
+import LoadingModal from '../../components/modal/LoadingModal';
 
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const { signIn, error, clearError, isLoading } = useSession();
 
   const handleLogin = async () => {
     try {
+      clearError();
       await signIn(email, password);
       router.replace('/');
     } catch (e) {
@@ -23,43 +24,45 @@ function SignIn() {
     }
   };
 
+  const handleForgotPassword = () => {
+    router.push('/ForgotPassword');
+  };
+
+  const handleSingUp = () => {
+    clearError();
+    router.push('/sign-up');
+  };
+
   return (
-    <View style={styles.container}>
-      <Image style={styles.logo} source={require('../../assets/images/loguio.png')} />
-
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        padding: 16,
+        backgroundColor: '#fff',
+      }}
+    >
+      <Image
+        style={{ marginTop: 48, width: 200, height: 140, resizeMode: 'contain', marginBottom: 24 }}
+        source={require('../../assets/images/loguio.png')}
+      />
       <AppTextInput placeholder="Email" value={email} onChangeText={setEmail} />
-
       <AppTextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         type={'password'}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-      />
-      {error && <Text style={{ color: 'red' }}>{error}</Text>}
-      {isLoading && <Text>Loading...</Text>}
-      <Pressable style={styles.button} onPress={handleLogin}>
-        <Text style={styles.textButton}> Iniciar sesión </Text>
-      </Pressable>
-      <Pressable>
-        <Text style={{ color: '#0082CD', fontSize: 18 }}> Olvidé mi contraseña </Text>
-      </Pressable>
+      {error && <ErrorMessage error={error} />}
+      {isLoading && <LoadingModal visible={isLoading} />}
+      <SubmitButton onPress={handleLogin} title="Iniciar sesión" />
+
+      <LinkButton onPress={handleForgotPassword} value="Olvidé mi contraseña" />
 
       <View style={{ flexDirection: 'row', marginTop: 20 }}>
         <Text style={{ color: '#9D9FA0', fontSize: 18 }}> ¿No tienes cuenta? </Text>
-        <Pressable
-          onPress={() => {
-            router.push('/sign-up');
-            clearError();
-          }}
-        >
-          <Text style={{ color: '#0082CD', fontSize: 18 }}>Regístrate</Text>
-        </Pressable>
+        <LinkButton onPress={handleSingUp} value="Regístrate" />
       </View>
     </View>
   );
