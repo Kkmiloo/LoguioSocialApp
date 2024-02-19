@@ -23,6 +23,7 @@ export default {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
+      package: 'com.loguiosocialapp.test',
     },
     web: {
       favicon: './assets/favicon.png',
