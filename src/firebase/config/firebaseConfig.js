@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator } from '@firebase/auth';
+import { getAuth, connectAuthEmulator, sendPasswordResetEmail } from '@firebase/auth';
 
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import Constants from 'expo-constants';

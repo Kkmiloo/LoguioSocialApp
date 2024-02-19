@@ -1,6 +1,5 @@
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { database } from '../config/firebaseConfig';
-import { writeBatch } from 'firebase/firestore';
 
 // cache.js
 
