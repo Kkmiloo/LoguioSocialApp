@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { COLORS } from '../../styles/theme';
 
-const AppTextInputDropDown = ({ options, value, setValue }) => {
+const AppTextInputDropDown = ({ options, value, setValue, placeholder }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   return (
@@ -19,7 +19,7 @@ const AppTextInputDropDown = ({ options, value, setValue }) => {
         maxHeight={300}
         labelField="name"
         valueField="name"
-        placeholder={!isFocus ? 'Select item' : '...'}
+        placeholder={!isFocus ? placeholder : '...'}
         searchPlaceholder="Search..."
         value={value}
         onFocus={() => setIsFocus(true)}
