@@ -12,6 +12,7 @@ const AppTextInput = ({
   setDate,
   editable,
   innerRef,
+  ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -48,6 +49,7 @@ const AppTextInput = ({
       onChangeText={onChangeText}
       editable={editable}
       autoCapitalize="none"
+      {...rest}
     />
   );
 };
