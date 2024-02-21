@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useStorageState } from './useStorageState';
 import {
   createUserWithEmailAndPassword,
@@ -37,7 +37,7 @@ export function SessionProvider(props) {
   const [[sessionLoading, session], setSession] = useStorageState('session');
   const [error, setError] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
-  console.log('Context', session);
+
   const signIn = async (email, password) => {
     try {
       setIsLoading(true);
@@ -78,7 +78,7 @@ export function SessionProvider(props) {
   const completeProfile = async (userUid, data) => {
     try {
       const user = await postUserInfo(userUid, data);
-      console.log(user);
+
       setSession(JSON.stringify(user));
     } catch (e) {
       console.log(e.message);
@@ -99,6 +99,7 @@ export function SessionProvider(props) {
         session,
         isLoading,
         error,
+        setError,
         sessionLoading,
       }}
     >
