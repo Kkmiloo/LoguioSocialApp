@@ -1,6 +1,5 @@
-/* global require */
 import React, { useState } from 'react';
-import { TextInput, View, Pressable, Text, Image, KeyboardAvoidingView } from 'react-native';
+import { View, Pressable, Text, KeyboardAvoidingView } from 'react-native';
 import { styles } from '../../styles/SignUp.styles';
 import { router } from 'expo-router';
 import { useSession } from '../../context/AuthContext';
@@ -8,22 +7,23 @@ import { ScrollView } from 'react-native-gesture-handler';
 import LoadingModal from '../../components/modal/LoadingModal';
 import AppTextInput from '../../components/inputs/AppTextInput';
 import SubmitButton from '../../components/buttons/SubmitButton';
+import AppLogo from '../../components/images/AppLogo';
+import LinkButton from '../../components/buttons/LinkButton';
+import ErrorMessage from '../../components/errors/ErrorMessage';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const { signUp, error, isLoading } = useSession();
+  const { signUp, error, isLoading, setError } = useSession();
 
   const handleSignUp = async () => {
     if (!email || !password || !confirmPassword) {
-      alert('Todos los campos son requeridos');
-      return;
+      return setError('Todos los campos son requeridos');
     }
     if (password !== confirmPassword) {
-      alert('Las contraseñas no coinciden');
-      return;
+      return setError('Las contraseñas no coinciden');
     }
 
     try {
@@ -39,7 +39,7 @@ function SignUp() {
       <ScrollView>
         {isLoading && <LoadingModal visible={isLoading} />}
         <View style={styles.container}>
-          <Image style={styles.logo} source={require('../../assets/images/loguio.png')} />
+          <AppLogo />
 
           <Text style={{ fontSize: 24, marginBottom: 24 }}> Registro </Text>
           <AppTextInput
@@ -63,7 +63,7 @@ function SignUp() {
             onChangeText={setConfirmPassword}
             textContentType="password"
           />
-          {error && <Text style={{ color: 'red' }}>{error}</Text>}
+          {error && <ErrorMessage error={error} />}
 
           <SubmitButton onPress={handleSignUp} title="Registrarme" />
           <Text style={{ color: '#9D9FA0', fontSize: 18, marginTop: 20 }}>
@@ -71,9 +71,7 @@ function SignUp() {
           </Text>
           <View style={{ flexDirection: 'row', marginTop: 20 }}>
             <Text style={{ color: '#9D9FA0', fontSize: 18 }}> ¿Ya tienes cuenta? </Text>
-            <Pressable onPress={() => router.replace('/sign-in')}>
-              <Text style={{ color: '#0082CD', fontSize: 18 }}>Inicia Sesión</Text>
-            </Pressable>
+            <LinkButton onPress={() => router.replace('/sign-in')} value={'Inicia Sesión'} />
           </View>
         </View>
       </ScrollView>
