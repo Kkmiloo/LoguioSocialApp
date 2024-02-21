@@ -21,6 +21,7 @@ module.exports = {
   },
   plugins: ['react', 'prettier', 'react-hooks'],
   rules: {
+    'react/prop-types': 0,
     'global-require': 0,
     indent: ['error', 2],
     'linebreak-style': ['error', 'windows'],
@@ -32,6 +33,6 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
-    'react/prop-types': ['error', { ignore: ['navigation'] }],
+    /*   'react/prop-types': ['error', { ignore: ['navigation'] }], */
   },
 };
