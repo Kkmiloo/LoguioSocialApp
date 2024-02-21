@@ -5,7 +5,6 @@ import { useTheme } from '../../context/ThemeContext';
 const ErrorMessage = ({ error }) => {
   const theme = useTheme();
 
-  console.log(theme);
   return (
     <View
       style={{
