@@ -2,9 +2,9 @@ import { Text, Pressable } from 'react-native';
 import React from 'react';
 import { styles } from '../../styles/Login.styles';
 
-const SubmitButton = ({ title, onPress }) => {
+const SubmitButton = ({ title, onPress, customStyle }) => {
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={{ ...styles.button, ...customStyle }} onPress={onPress}>
       <Text style={styles.textButton}> {title}</Text>
     </Pressable>
   );
