@@ -1,6 +1,5 @@
-/* global require */
 import React, { useState } from 'react';
-import { View, Pressable, Text, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useSession } from '../../context/AuthContext';
 import { router } from 'expo-router';
 import AppTextInput from '../../components/inputs/AppTextInput';
@@ -8,6 +7,7 @@ import SubmitButton from '../../components/buttons/SubmitButton';
 import ErrorMessage from '../../components/errors/ErrorMessage';
 import LinkButton from '../../components/buttons/LinkButton';
 import LoadingModal from '../../components/modal/LoadingModal';
+import AppLogo from '../../components/images/AppLogo';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -34,19 +34,8 @@ function SignIn() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        padding: 16,
-        backgroundColor: '#fff',
-      }}
-    >
-      <Image
-        style={{ marginTop: 48, width: 200, height: 140, resizeMode: 'contain', marginBottom: 24 }}
-        source={require('../../assets/images/loguio.png')}
-      />
+    <View style={styles.container}>
+      <AppLogo />
       <AppTextInput placeholder="Email" value={email} onChangeText={setEmail} />
       <AppTextInput
         placeholder="Password"
@@ -67,5 +56,15 @@ function SignIn() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+});
 
 export default SignIn;
