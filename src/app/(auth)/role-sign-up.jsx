@@ -1,5 +1,5 @@
-import { View, Text, Image, Pressable } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, Image } from 'react-native';
+import React, { useState } from 'react';
 import RadioBtn from '../../components/buttons/RadioBtn';
 import { styles } from '../../styles/SignUp.styles';
 
@@ -9,6 +9,7 @@ import tourist from '../../assets/images/tourist.png';
 import { router } from 'expo-router';
 import { useSession } from '../../context/AuthContext';
 import SubmitButton from '../../components/buttons/SubmitButton';
+import AppLogo from '../../components/images/AppLogo';
 
 function RoleSignUp() {
   const [userRole, setUserRole] = useState('');
@@ -28,7 +29,7 @@ function RoleSignUp() {
 
   return (
     <View style={styles.container}>
-      {/*  <Image style={styles.logo} source={loguioLogo} /> */}
+      <AppLogo />
       <Text style={{ fontSize: 24, marginBottom: 24 }}> Define tu rol </Text>
       <View
         style={{
@@ -51,15 +52,13 @@ function RoleSignUp() {
         ))}
       </View>
 
-      <Pressable
-        style={styles.button}
+      <SubmitButton
+        title={'Salir'}
         onPress={() => {
           signOut();
           router.replace('/');
         }}
-      >
-        <Text> Salir</Text>
-      </Pressable>
+      />
 
       <SubmitButton title="Continuar" onPress={handleContinue} />
     </View>
